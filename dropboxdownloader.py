@@ -1,38 +1,36 @@
 import dropbox
 import os
-
 # API Token
-dbx = dropbox.Dropbox('') # add Dropbox API token here
-
+dbx = dropbox.Dropbox('') # Add Dropboc Token String here
 # List for storing Folder and Photo names
 folders = []
 photos = []
-
 # Store names of Folders
 for entry in  dbx.files_list_folder('/ingest').entries:
 		if "." not in entry.name:
 			folders.append(entry.name)
-		#dbx.files_download_to_file(entry.name, "/ingest/"+entry.name, rev=None)
-		#print(dbx.files_download(entry))
-
 # Create local directory for download
 for i in folders:
 	if not os.path.exists(i):
 		os.makedirs(i)
-
 # Downlaod everthing within each folder
-num = 0
-count = 0
+num = 0 # count for folders list
+count = 0 # count for photos list
+cwd = os.getcwd() # Gets the current working directory
 for i in folders:
 	foldername = folders[num]
+	# Store names of Photos within current Folder
 	dir = '/ingest/'+foldername
-	
 	for entry in dbx.files_list_folder(dir).entries:
 		photos.append(entry.name)
+	# Determine which Photos to download by checking if the absolute path already exists locally
 	for i in photos:
-		destination = folders[num]+"/"+photos[count]
+		destination = cwd+"/"+folders[num]+"/"+photos[count]
 		target = "/ingest/"+folders[num]+"/"+photos[count]
-		#print(destination+"\n"+"\t"+target)
-		dbx.files_download_to_file(destination, target, rev=None)
-		count = count+1
-	num = num+1
+		downloaded = os.path.exists(destination)
+		if downloaded == True:
+			break
+		elif downloaded == False:
+			dbx.files_download_to_file(destination, target, rev=None)
+		count = count+1 # move on to next item in photos list
+	num = num+1 # move on to next item in folders list
