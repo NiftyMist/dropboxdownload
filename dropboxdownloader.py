@@ -16,6 +16,7 @@ for i in folders:
 # Downlaod everthing within each folder
 num = 0 # count for folders list
 count = 0 # count for photos list
+photo = 0
 cwd = os.getcwd() # Gets the current working directory
 for i in folders:
 	foldername = folders[num]
@@ -32,5 +33,8 @@ for i in folders:
 			break
 		elif downloaded == False:
 			dbx.files_download_to_file(destination, target, rev=None)
+			print("\n+")
+			photo = photo+1
 		count = count+1 # move on to next item in photos list
 	num = num+1 # move on to next item in folders list
+print("\nDownloaded+ "+str(photo)+" Photos")
