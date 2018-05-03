@@ -29,13 +29,12 @@ for i in folders:
 		destination = cwd+"/"+folders[num]+"/"+photos[count]
 		target = "/ingest/"+folders[num]+"/"+photos[count]
 		downloaded = os.path.exists(destination)
-		print(downloaded)
 		if downloaded == True:
 			count = count+1
 			continue
 		elif downloaded == False:
 			dbx.files_download_to_file(destination, target, rev=None)
 			photo = photo+1
-		count = count+1 # move on to next item in photos list
+			count = count+1 # move on to next item in photos list
 	num = num+1 # move on to next item in folders list
 print("Downloaded "+str(photo)+" New Photos")
